@@ -1,0 +1,21 @@
+export TERM=xterm-256color
+
+setopt PROMPT_SUBST
+
+tun0_ip() {
+  ip -4 -o addr show tun0 2>/dev/null | awk '{print $4}' | cut -d/ -f1
+}
+
+PROMPT='%F{165}%n%F{171}@%F{213}%m %F{219}%1~ %F{45}$(tun0_ip)%f$ '
+
+alias ls='ls --color=auto'
+alias l='ls -l'
+alias ll='ls -alF'
+alias la='ls -A'
+alias lsd='ls --color=auto -d */'
+
+# Ctrl + Left Arrow (Backward by word)
+bindkey "^[[1;5D" backward-word
+
+# Ctrl + Right Arrow (Forward by word)
+bindkey "^[[1;5C" forward-word

@@ -1,0 +1,1 @@
+DOOM is a containerized offensive security workspace built for pentesting, CTFs, exploit development, and research. It provides a clean, reproducible environment packed with tooling so you can drop into any machine and start working without polluting the host OS
