@@ -72,6 +72,12 @@ RUN /opt/ad-venv/bin/pip install --no-cache-dir \
     certipy-ad
 
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cargo \
+    liblzma-dev pkg-config \
+    libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN /opt/ad-venv/bin/pip install --no-cache-dir git+https://github.com/Pennyw0rth/NetExec
 
 ############################
@@ -83,6 +89,7 @@ FROM base AS doom
 # Copy pwn tools venv and directory (includes pwndbg clone)
 COPY --from=pwn /opt/pwn-tools /opt/pwn-tools
 COPY --from=pwn /opt/pwn-venv /opt/pwn-venv
+COPY --from=pwn /root/.cargo/bin/pwninit /usr/local/bin/pwninit
 
 
 # Copy malware tools venv
@@ -94,7 +101,7 @@ COPY --from=redteam /opt/ad-venv /opt/ad-venv
 
 #PATH
 
-ENV PATH="/home/doom/.cargo/bin:/opt/pwn-venv/bin:/opt/malware-venv/bin:/opt/ad-venv/bin:$PATH"
+ENV PATH="/opt/pwn-venv/bin:/opt/malware-venv/bin:/opt/ad-venv/bin:$PATH"
 
 # Additional tools via apt
 RUN apt-get update && apt-get install -y --no-install-recommends \
